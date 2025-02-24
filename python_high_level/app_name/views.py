@@ -33,3 +33,6 @@ def sum_multiples(request):
     num1 = int(request.GET.get('num1'))  # For int: num1
     num2 = int(request.GET.get('num2'))  # For int: num2
     return HttpResponse(sum_multiple_extracted.main(num1, num2))
+
+def form(request):
+    name = str(request.GET.get(''))
