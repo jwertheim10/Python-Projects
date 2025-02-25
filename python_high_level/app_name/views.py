@@ -1,5 +1,11 @@
 from django.shortcuts import HttpResponse, render
 from . import sum_multiple_extracted
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import Tasks
+from .serializers import TasksSerializer
+
 
 # This function returns hello world on the webpage
 def index(request): 
@@ -34,5 +40,30 @@ def sum_multiples(request):
     num2 = int(request.GET.get('num2'))  # For int: num2
     return HttpResponse(sum_multiple_extracted.main(num1, num2))
 
-def form(request):
-    name = str(request.GET.get(''))
+class TasksListCreate(generics.ListCreateAPIView):
+    queryset = Tasks.objects.all()
+    serializer_class = TasksSerializer
+
+    def delete(self, request, *args, **kwargs):
+        Tasks.objects.all().delete()
+        return HttpResponse(status=status.HTTP_204_NO_CONTENT)
+
+class TasksRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Tasks.objects.all()
+    serializer_class = TasksSerializer
+    lookup_field = "pk"
+
+
+class TasksList(APIView):
+    def get (self, request, format=None):
+        # Get the name from the query parameters (if none default to empty string)
+        name = str(request.query_params.get("name", ""))
+        tasks
+        if name:
+            # Filter the queryset based on the name
+            tasks = Tasks.objects.filter(name__icontains=name)
+        else:
+            # If no name, return all
+            tasks = Tasks.objects.all()
+        serializer = TasksSerializer(tasks, many = True)
+        return HttpResponse(serializer.data, status=status.HTTP_200_OK)
