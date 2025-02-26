@@ -40,30 +40,43 @@ def sum_multiples(request):
     num2 = int(request.GET.get('num2'))  # For int: num2
     return HttpResponse(sum_multiple_extracted.main(num1, num2))
 
+# In this class I use the Django generics and serializer to have a front-end UI to create 
+# and view tasks added
 class TasksListCreate(generics.ListCreateAPIView):
     queryset = Tasks.objects.all()
     serializer_class = TasksSerializer
 
+# I added a delete button here to the page 
     def delete(self, request, *args, **kwargs):
         Tasks.objects.all().delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
+# You can view a single task by looking up a primary key
 class TasksRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tasks.objects.all()
     serializer_class = TasksSerializer
     lookup_field = "pk"
 
-
 class TasksList(APIView):
-    def get (self, request, format=None):
+    
+    # If you pass in /tasks/?name=___ you can view the tasks assigned to any one person
+    def get(self, request, format=None):
         # Get the name from the query parameters (if none default to empty string)
-        name = str(request.query_params.get("name", ""))
-        tasks
-        if name:
+        passed_name = str(request.GET.get("name", ""))
+        tasks = None
+        if passed_name:
             # Filter the queryset based on the name
-            tasks = Tasks.objects.filter(name__icontains=name)
+            tasks = Tasks.objects.filter(name__icontains=passed_name)
         else:
             # If no name, return all
             tasks = Tasks.objects.all()
         serializer = TasksSerializer(tasks, many = True)
         return HttpResponse(serializer.data, status=status.HTTP_200_OK)
+    
+    # You can post via an API/Postman
+    def post(self, request, format=None):
+        serializer = TasksSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()  # This will save the task if the data is valid
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
