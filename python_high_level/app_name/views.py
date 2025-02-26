@@ -46,7 +46,7 @@ class TasksListCreate(generics.ListCreateAPIView):
     queryset = Tasks.objects.all()
     serializer_class = TasksSerializer
 
-# I added a delete button here to the page 
+# I added a delete button to the page 
     def delete(self, request, *args, **kwargs):
         Tasks.objects.all().delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
@@ -58,8 +58,8 @@ class TasksRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "pk"
 
 class TasksList(APIView):
-    
     # If you pass in /tasks/?name=___ you can view the tasks assigned to any one person
+    #
     def get(self, request, format=None):
         # Get the name from the query parameters (if none default to empty string)
         passed_name = str(request.GET.get("name", ""))

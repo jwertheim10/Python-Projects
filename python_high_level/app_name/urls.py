@@ -7,6 +7,6 @@ urlpatterns = [
     path('operation/', views.operation, name='operation'),
     path('sum_multiples/', views.sum_multiples, name = 'sum_multiples'),
     path('tasks_form/', views.TasksListCreate.as_view(), name = 'tasks_view_create'),
-    path('tasks/', views.TasksList.as_view(), name = 'view_tasks'),
+    path('tasks/', views.TasksList.as_view(), name = 'tasks_view'),
     path('tasks/<int:pk>/', views.TasksRetriesUpdateDestory.as_view(), name = 'tasks_update')
     ]
