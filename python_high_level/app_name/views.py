@@ -3,8 +3,8 @@ from . import sum_multiple_extracted
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Tasks
-from .serializers import TasksSerializer
+from .models import *
+from .serializers import *
 
 
 # This function returns hello world on the webpage
@@ -80,3 +80,12 @@ class TasksList(APIView):
             serializer.save()  # This will save the task if the data is valid
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserCreate(generics.ListCreateAPIView):
+    queryset = Accounts.objects.all()
+    serializer_class = AccountsSerializer
+
+class AccountsRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Accounts.objects.all()
+    serializer_class = AccountsSerializer
+    lookup_field = "pk"

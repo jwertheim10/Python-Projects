@@ -8,5 +8,7 @@ urlpatterns = [
     path('sum_multiples/', views.sum_multiples, name = 'sum_multiples'),
     path('tasks_form/', views.TasksListCreate.as_view(), name = 'tasks_view_create'),
     path('tasks/', views.TasksList.as_view(), name = 'tasks_view'),
-    path('tasks/<int:pk>/', views.TasksRetriesUpdateDestory.as_view(), name = 'tasks_update')
+    path('tasks/<int:pk>/', views.TasksRetriesUpdateDestory.as_view(), name = 'tasks_update'),
+    path('create_user/', views.UserCreate.as_view(), name='user_create'),
+    path('users/<int:pk>/', views.AccountsRetriesUpdateDestory.as_view(), name = 'accounts_update')
     ]
