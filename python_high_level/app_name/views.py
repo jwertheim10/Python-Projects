@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import *
 from .serializers import *
-
+from django.shortcuts import render, redirect
+from .forms import AccountsForm
 
 # This function returns hello world on the webpage
 def index(request): 
@@ -84,8 +85,28 @@ class TasksList(APIView):
 class UserCreate(generics.ListCreateAPIView):
     queryset = Accounts.objects.all()
     serializer_class = AccountsSerializer
+    # if form.is_valid():
+    #     form.save()
+    #     return http.HttpResponseRedirect('')
+
+    def delete(self, request, *args, **kwargs):
+        Accounts.objects.all().delete()
+        return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
 class AccountsRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     queryset = Accounts.objects.all()
     serializer_class = AccountsSerializer
     lookup_field = "pk"
+
+def createAccount(request):
+    if request.method == 'POST':
+        form = AccountsForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save the form data to the database
+            return redirect('successful_account.html')  # Redirect to a success page after submission
+    else:
+        form = AccountsForm()
+    return render(request, 'add_account.html', {'form': form})
+
+def accountSuccess(request):
+    return render(request, 'successful_account.html')
