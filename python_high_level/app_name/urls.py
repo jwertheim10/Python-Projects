@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [    
@@ -8,9 +8,9 @@ urlpatterns = [
     path('sum_multiples/', views.sum_multiples, name = 'sum_multiples'),
     path('tasks_form/', views.TasksListCreate.as_view(), name = 'tasks_view_create'),
     path('tasks/', views.TasksList.as_view(), name = 'tasks_view'),
-    path('tasks/<int:pk>/', views.TasksRetriesUpdateDestory.as_view(), name = 'tasks_update'),
+    path('tasks/<int:pk>/', views.TasksRetrieveUpdateDestory.as_view(), name = 'tasks_update'),
     path('create_user/', views.UserCreate.as_view(), name='user_create'),
-    path('users/<int:pk>/', views.AccountsRetriesUpdateDestory.as_view(), name = 'accounts_update'),
-    path('create/', views.createAccount, name = 'account_create'),
-    path('create/successful_account.html', views.accountSuccess, name = 'account_created_success')
+    path('users/<int:pk>/', views.AccountsRetrieveUpdateDestory.as_view(), name = 'accounts_update'),
+    path('create/', views.create_account, name = 'account_create'),
+    path('create/successful_account.html', views.account_success, name = 'account_created_success')
     ]

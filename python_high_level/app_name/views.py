@@ -53,7 +53,7 @@ class TasksListCreate(generics.ListCreateAPIView):
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
 # You can view a single task by looking up a primary key
-class TasksRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
+class TasksRetrieveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     queryset = Tasks.objects.all()
     serializer_class = TasksSerializer
     lookup_field = "pk"
@@ -93,20 +93,20 @@ class UserCreate(generics.ListCreateAPIView):
         Accounts.objects.all().delete()
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
-class AccountsRetriesUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
+class AccountsRetrieveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     queryset = Accounts.objects.all()
     serializer_class = AccountsSerializer
     lookup_field = "pk"
 
-def createAccount(request):
+def create_account(request):
     if request.method == 'POST':
         form = AccountsForm(request.POST)
         if form.is_valid():
             form.save()  # Save the form data to the database
-            return redirect('successful_account.html')  # Redirect to a success page after submission
+            return redirect('account_created_success')  # Redirect to a success page after submission
     else:
         form = AccountsForm()
     return render(request, 'add_account.html', {'form': form})
 
-def accountSuccess(request):
+def account_success(request):
     return render(request, 'successful_account.html')
