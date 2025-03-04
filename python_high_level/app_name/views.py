@@ -41,8 +41,7 @@ def sum_multiples(request):
     num2 = int(request.GET.get('num2'))  # For int: num2
     return HttpResponse(sum_multiple_extracted.main(num1, num2))
 
-# In this class I use the Django generics and serializer to have a front-end UI to create 
-# and view tasks added
+# In this class I use the Django generics and serializer to have a front-end UI to create and view tasks added
 class TasksListCreate(generics.ListCreateAPIView):
     queryset = Tasks.objects.all()
     serializer_class = TasksSerializer
@@ -60,7 +59,6 @@ class TasksRetrieveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
 
 class TasksList(APIView):
     # If you pass in /tasks/?name=___ you can view the tasks assigned to any one person
-    #
     def get(self, request, format=None):
         # Get the name from the query parameters (if none default to empty string)
         passed_name = str(request.GET.get("name", ""))
@@ -85,9 +83,6 @@ class TasksList(APIView):
 class UserCreate(generics.ListCreateAPIView):
     queryset = Accounts.objects.all()
     serializer_class = AccountsSerializer
-    # if form.is_valid():
-    #     form.save()
-    #     return http.HttpResponseRedirect('')
 
     def delete(self, request, *args, **kwargs):
         Accounts.objects.all().delete()
