@@ -7,6 +7,9 @@ from .models import *
 from .serializers import *
 from django.shortcuts import render, redirect
 from .forms import AccountsForm
+from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 # This function returns hello world on the webpage
 def index(request): 
@@ -94,6 +97,7 @@ class AccountsRetrieveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "pk"
 
 def create_account(request):
+    permission_classes = (IsAuthenticated, ) 
     if request.method == 'POST':
         form = AccountsForm(request.POST)
         if form.is_valid():
