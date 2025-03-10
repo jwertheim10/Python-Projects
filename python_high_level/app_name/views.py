@@ -9,6 +9,10 @@ from django.shortcuts import render, redirect
 from .forms import AccountsForm
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.http import JsonResponse
+from django.contrib.auth import authenticate
+
 
 
 # This function returns hello world on the webpage
@@ -109,3 +113,24 @@ def create_account(request):
 
 def account_success(request):
     return render(request, 'successful_account.html')
+
+class CustomTokenObtainView(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is None:
+                    return JsonResponse({'error': 'Invalid username or password'}, status=400)
+        
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+
+        data = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'token': access_token
+        }
+        return JsonResponse(data)

@@ -15,5 +15,5 @@ urlpatterns = [
     path('create/', views.create_account, name = 'account_create'),
     path('create/successful_account.html', views.account_success, name = 'account_created_success'),
     path('api/token/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/tokenize/', views.CustomTokenObtainView.as_view(), name='token_obtain_pair')
     ]
